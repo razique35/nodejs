@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+  <link rel="shortcut icon" href="../pp.jfif" type="image/x-icon">
+    <title>Student CRUD</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            width: 400px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px gray;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background: green;
+            color: white;
+            border: none;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #333;
+            color: white;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+        }
+
+        .edit-btn {
+            background: blue;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Student CRUD Operation</h2>
+
+<div class="form-container">
+    <input type="text" id="name" placeholder="Student Name">
+    <input type="text" id="father" placeholder="Father Name">
+    <input type="text" id="roll" placeholder="Roll Number">
+    <input type="text" id="class" placeholder="Class">
+
+    <button class="add-btn" onclick="addStudent()">Add Student</button>
+</div>
+
+<table id="studentTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Father</th>
+            <th>Roll No</th>
+            <th>Class</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+let selectedRow = null;
+
+function addStudent() {
+    let name = document.getElementById("name").value;
+    let father = document.getElementById("father").value;
+    let roll = document.getElementById("roll").value;
+    let studentClass = document.getElementById("class").value;
+
+    if (name === "" || father === "" || roll === "" || studentClass === "") {
+        alert("Please fill all fields");
+        return;
+    }
+
+    let table = document.getElementById("studentTable").getElementsByTagName("tbody")[0];
+
+    if (selectedRow == null) {
+        let newRow = table.insertRow();
+
+        newRow.insertCell(0).innerHTML = name;
+        newRow.insertCell(1).innerHTML = father;
+        newRow.insertCell(2).innerHTML = roll;
+        newRow.insertCell(3).innerHTML = studentClass;
+        newRow.insertCell(4).innerHTML =
+            `<button class="edit-btn" onclick="editStudent(this)">Edit</button>
+             <button class="delete-btn" onclick="deleteStudent(this)">Delete</button>`;
+    } else {
+        selectedRow.cells[0].innerHTML = name;
+        selectedRow.cells[1].innerHTML = father;
+        selectedRow.cells[2].innerHTML = roll;
+        selectedRow.cells[3].innerHTML = studentClass;
+        selectedRow = null;
+    }
+
+    document.getElementById("name").value = "";
+    document.getElementById("father").value = "";
+    document.getElementById("roll").value = "";
+    document.getElementById("class").value = "";
+}
+
+function editStudent(btn) {
+    selectedRow = btn.parentElement.parentElement;
+
+    document.getElementById("name").value = selectedRow.cells[0].innerHTML;
+    document.getElementById("father").value = selectedRow.cells[1].innerHTML;
+    document.getElementById("roll").value = selectedRow.cells[2].innerHTML;
+    document.getElementById("class").value = selectedRow.cells[3].innerHTML;
+}
+
+function deleteStudent(btn) {
+    if (confirm("Are you sure to delete?")) {
+        let row = btn.parentElement.parentElement;
+        row.remove();
+    }
+}
+</script>
+
+</body>
+</html>
